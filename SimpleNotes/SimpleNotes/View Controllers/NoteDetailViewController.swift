@@ -11,20 +11,23 @@ import UIKit
 import CoreData
 import Photos
 
-class NoteDetailViewController: UIViewController, UITextFieldDelegate {
-    var note: Note?
-    var noteModel: NoteDataModel?
-    var dismissDelegate: DismissDelegate?
+class NoteDetailViewController: UIViewController {
     @IBOutlet weak var titleTextView: UITextField!
     @IBOutlet weak var snippetTextView: UITextView!
     @IBOutlet weak var detailStackView: UIStackView!
     
+    var note: Note?
+    var noteModel: NoteDataModel?
+    var dismissDelegate: DismissDelegate?
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func viewDidLoad() {
@@ -42,7 +45,7 @@ class NoteDetailViewController: UIViewController, UITextFieldDelegate {
             safeNote.title = titleTextView.text
             safeNote.snippet = snippetTextView.text
             guard
-                NotesModel.sharedModel.updateNote(safeNote, withTitle: titleTextView.text, withSnippet: snippetTextView.text)
+                NotesDataManager.sharedManager.updateNote(safeNote, withTitle: titleTextView.text, withSnippet: snippetTextView.text)
             else {
                 return
             }
@@ -53,7 +56,7 @@ class NoteDetailViewController: UIViewController, UITextFieldDelegate {
                 noteModel = nil
                 return
             }
-            NotesModel.sharedModel.saveNote(model: safeNoteModel)
+            NotesDataManager.sharedManager.saveNote(model: safeNoteModel)
         }
         
         dismissDelegate?.dismissVC {
@@ -62,7 +65,9 @@ class NoteDetailViewController: UIViewController, UITextFieldDelegate {
             tableVC.tableView.reloadData()
         }
     }
-    
+}
+
+extension NoteDetailViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         title = titleTextView.text
     }

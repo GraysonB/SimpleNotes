@@ -54,7 +54,7 @@ class NotesTableViewController: UITableViewController {
         switch editingStyle {
         case .delete:
             let note = notes[indexPath.row]
-            if NotesModel.sharedModel.deleteNote(note: note) {
+            if NotesDataManager.sharedManager.deleteNote(note: note) {
                 notes.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
@@ -85,7 +85,7 @@ class NotesTableViewController: UITableViewController {
     }
     
     func shouldReloadDataSource() {
-        notes = NotesModel.sharedModel.loadNotes()
+        notes = NotesDataManager.sharedManager.loadNotes()
     }
 }
 

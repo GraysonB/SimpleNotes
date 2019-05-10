@@ -10,14 +10,14 @@ import Foundation
 import CoreData
 import UIKit
 
-class NotesModel {
+class NotesDataManager {
     private var notes = [Note]()
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    private static var instance: NotesModel?
+    private static var instance: NotesDataManager?
     
-    class var sharedModel: NotesModel {
+    class var sharedManager: NotesDataManager {
         guard let shared = instance else {
-            instance = NotesModel()
+            instance = NotesDataManager()
             return instance!
         }
         return shared
